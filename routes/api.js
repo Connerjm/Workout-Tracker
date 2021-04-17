@@ -1,11 +1,28 @@
+const router = require("express").Router();
+const db = require("../models");
+
 //get workouts.
-//get api/workouts.
+router.get("/api/workouts", (req, res) =>
+{
+    //TODO
+});
 
 //add exercise
-//put api/workouts:id
+router.put("/api/workouts/:id", (req, res) =>
+{
+    //TODO
+});
 
 //create workout
-//post api/workouts
+router.pust("/api/workouts", (req, res) =>
+{
+    //TODO
+});
 
 //get workouts in range
-//api/workouts/range
+router.get("/api/workouts/range", (req, res) =>
+{
+    //TODO
+});
+
+module.exports = router;
