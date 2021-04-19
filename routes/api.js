@@ -41,15 +41,41 @@ router.put("/api/workouts/:id", async ({ params, body }, res) =>
 });
 
 //create workout
-router.post("/api/workouts", (req, res) =>
+router.post("/api/workouts", async (req, res) =>
 {
-    //TODO
+    try
+    {
+        const workout = await Workout.create({ day: new Date() });
+
+        if (workout)
+            res.json(workout);
+        else
+            res.json({ message: "Create failed." });
+    }
+    catch (err)
+    {
+        res.status(500).json(err);
+    }
 });
 
 //get workouts in range
-router.get("/api/workouts/range", (req, res) =>
+router.get("/api/workouts/range", async (req, res) =>
 {
-    //TODO
+    try
+    {
+        const workouts = await Workout.find({}).limit(7);
+
+        console.log(workouts);
+
+        if (workouts)
+            res.json(workouts);
+        else
+            res.json({ message: "No workouts found within range." });
+    }
+    catch (err)
+    {
+        res.status(500).json(err);
+    }
 });
 
 module.exports = router;
