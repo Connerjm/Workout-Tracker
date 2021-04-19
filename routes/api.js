@@ -1,12 +1,16 @@
 const router = require("express").Router();
-const db = require("../models");
+const { Workout, Exercise } = require("../models/");
 
 //get workouts.
 router.get("/api/workouts", async (req, res) =>
 {
     try
     {
-        const workouts = await db.Workout.find({}).populate("exercises");
+        const workouts = await Workout.find({})//.populate("exercises");
+
+        const exercises = await Exercise.find({});
+
+        console.log(exercises);
 
         if (workouts)
             res.json(workouts);
@@ -15,18 +19,19 @@ router.get("/api/workouts", async (req, res) =>
     }
     catch (err)
     {
+        console.log(err);
         res.status(500).json(err);
     }
 });
 
 //add exercise
-router.put("/api/workouts/:id", (req, res) =>
+router.put("/api/workouts/:id", ({ body }, res) =>
 {
-    //TODO
+    console.log(body);
 });
 
 //create workout
-router.pust("/api/workouts", (req, res) =>
+router.post("/api/workouts", (req, res) =>
 {
     //TODO
 });
