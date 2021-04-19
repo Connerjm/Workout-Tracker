@@ -6,11 +6,7 @@ router.get("/api/workouts", async (req, res) =>
 {
     try
     {
-        const workouts = await Workout.find({})//.populate("exercises");
-
-        const exercises = await Exercise.find({});
-
-        console.log(exercises);
+        const workouts = await Workout.find({});
 
         if (workouts)
             res.json(workouts);
@@ -19,15 +15,29 @@ router.get("/api/workouts", async (req, res) =>
     }
     catch (err)
     {
-        console.log(err);
         res.status(500).json(err);
     }
 });
 
 //add exercise
-router.put("/api/workouts/:id", ({ body }, res) =>
+router.put("/api/workouts/:id", async ({ params, body }, res) =>
 {
-    console.log(body);
+    try
+    {
+        const workout = await Workout.findOneAndUpdate(
+            { _id: params.id },
+            { $push: { exercises: await Exercise.create(body) } },
+            { new: true });
+
+        if (workout)
+            res.json(workout);
+        else
+            res.json({ message: "No workout found with that id."});
+    }
+    catch (err)
+    {
+        res.status(500).json(err);
+    }
 });
 
 //create workout
