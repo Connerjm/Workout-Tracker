@@ -2,9 +2,21 @@ const router = require("express").Router();
 const db = require("../models");
 
 //get workouts.
-router.get("/api/workouts", (req, res) =>
+router.get("/api/workouts", async (req, res) =>
 {
-    //TODO
+    try
+    {
+        const workouts = await db.Workout.find({}).populate("exercises");
+
+        if (workouts)
+            res.json(workouts);
+        else
+            res.json({ message: "No workouts found." });
+    }
+    catch (err)
+    {
+        res.status(500).json(err);
+    }
 });
 
 //add exercise
