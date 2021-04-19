@@ -6,12 +6,15 @@ router.get("/api/workouts", async (req, res) =>
 {
     try
     {
-        const workouts = await Workout.find({});
+        const workout = await Workout.findOne({}).sort({ _id: -1 }).limit(1);
 
-        if (workouts)
-            res.json(workouts);
+        let totalDuration = 0;
+        workout.exercises.forEach(e => {totalDuration += e.duration;});
+
+        if (workout)
+            res.json([{ _id: workout._id, day: workout.day, exercises: workout.exercises, totalDuration }]);
         else
-            res.json({ message: "No workouts found." });
+            res.json({ message: "No workout found." });
     }
     catch (err)
     {
@@ -64,8 +67,6 @@ router.get("/api/workouts/range", async (req, res) =>
     try
     {
         const workouts = await Workout.find({}).limit(7);
-
-        console.log(workouts);
 
         if (workouts)
             res.json(workouts);
