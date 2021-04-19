@@ -19,7 +19,19 @@ const WorkoutSchema = new Schema(
         type: Date,
         unique: true
     },
+    totalDuration: { type: Number },
     exercises: [ExerciseSchema]
+});
+
+WorkoutSchema.pre("save", function(next)
+{
+    let td = 0;
+
+    console.log(this);
+
+    this.totalDuration = td;
+
+    next();
 });
 
 const Exercise = mongoose.model("Exercise", ExerciseSchema);
