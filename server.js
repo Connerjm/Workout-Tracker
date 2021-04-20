@@ -16,6 +16,7 @@ app.use(express.static("public"));
 //Set mongoose connection.
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout",
 {
+    //Required to eliminate deprecated errors.
     useNewUrlParser: true,
     useFindAndModify: false,
     useCreateIndex: true,

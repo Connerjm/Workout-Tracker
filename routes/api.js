@@ -1,3 +1,4 @@
+//Imports
 const router = require("express").Router();
 const { Workout, Exercise } = require("../models/");
 
@@ -6,15 +7,12 @@ router.get("/api/workouts", async (req, res) =>
 {
     try
     {
-        const workout = await Workout.findOne({}).sort({ _id: -1 }).limit(1);
+        const workouts = await Workout.find({}).sort({ _id: -1 });
 
-        let totalDuration = 0;
-        workout.exercises.forEach(e => {totalDuration += e.duration;});
-
-        if (workout)
-            res.json([{ _id: workout._id, day: workout.day, exercises: workout.exercises, totalDuration }]);
+        if (workouts)
+            res.json(workouts);
         else
-            res.json({ message: "No workout found." });
+            res.json({ message: "No workouts found." });
     }
     catch (err)
     {
@@ -79,4 +77,5 @@ router.get("/api/workouts/range", async (req, res) =>
     }
 });
 
+//Export router.
 module.exports = router;

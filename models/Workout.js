@@ -1,6 +1,8 @@
+//Imports.
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+//Schema for the exercises.
 const ExerciseSchema = new Schema(
 {
     type: String,
@@ -12,6 +14,7 @@ const ExerciseSchema = new Schema(
     sets: Number
 });
 
+//Schema for the workouts.
 const WorkoutSchema = new Schema(
 {
     day:
@@ -19,22 +22,21 @@ const WorkoutSchema = new Schema(
         type: Date,
         unique: true
     },
-    totalDuration: { type: Number },
     exercises: [ExerciseSchema]
 });
 
-WorkoutSchema.pre("save", function(next)
+//Virtual property for total duration.
+WorkoutSchema.virtual("totalDuration").get(function ()
 {
-    let td = 0;
-
-    console.log(this);
-
-    this.totalDuration = td;
-
-    next();
+    let totalDuration = 0;
+    for (x = 0; x < this.exercises.length; x++)
+        totalDuration += this.exercises[x].duration;
+    return totalDuration;
 });
 
+//Compile the schemas into models.
 const Exercise = mongoose.model("Exercise", ExerciseSchema);
 const Workout = mongoose.model("Workout", WorkoutSchema);
 
+//Export the models.
 module.exports = { Exercise, Workout };
